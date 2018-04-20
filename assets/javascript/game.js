@@ -33,9 +33,8 @@ var answerIndex = [Math.floor(Math.random() * miyazaki.length)];
 var answer = miyazaki[answerIndex];
 
 document.getElementById("wins").textContent = wins;
-document.getElementById("currentWord").textContent = currentWord
-  .join("")
-  .replace(" ", "-");
+document.getElementById("currentWord").textContent = currentWord.join("");
+
 document.getElementById("guessesLeft").textContent = guessesLeft;
 document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
 
@@ -50,9 +49,8 @@ function keyPressed(event) {
         currentWord[i] = answer[i];
       }
     }
-    document.getElementById("currentWord").textContent = currentWord
-      .join("")
-      .replace(" ", "-");
+    document.getElementById("currentWord").textContent = currentWord.join("");
+
     if (answer.toLowerCase().indexOf(event.key) === -1) {
       // Incorrect Guess
       guessesLeft--;
@@ -66,7 +64,15 @@ function keyPressed(event) {
         resetGame();
         alreadyGuessed = [];
         document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
-        if (wins === 5) alert("Wooop five wins!!");
+        if (wins === 5) {
+          document.getElementById("congratsTotoro").style.display = "block";
+          document.getElementById("resetButton").style.display = "block";
+          document.body.style.backgroundColor = "white";
+          document.querySelector(".game").style.display = "none";
+          document.getElementById("hangman").style.display = "none";
+          document.querySelector(".header").style.display = "none";
+          document.getElementById("music").pause();
+        }
       }
     }
 
@@ -117,9 +123,8 @@ function resetGame() {
       .join("")
   );
   document.getElementById("wins").textContent = wins;
-  document.getElementById("currentWord").textContent = currentWord
-    .join("")
-    .replace(" ", "-");
+  document.getElementById("currentWord").textContent = currentWord.join("");
+
   document.getElementById("guessesLeft").textContent = guessesLeft;
 }
 
