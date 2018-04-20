@@ -27,10 +27,8 @@ var miyazaki = [
 
 var wins = 0;
 var currentWord = [];
-var guessesLeft = 15;
+var guessesLeft = 10;
 var alreadyGuessed = [];
-var userGuess = [];
-var alphabet = /^[a-z]+$/i;
 var answerIndex = [Math.floor(Math.random() * miyazaki.length)];
 var answer = miyazaki[answerIndex];
 
@@ -40,10 +38,27 @@ document.getElementById("guessesLeft").textContent = guessesLeft;
 document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
 
 function keyPressed(event) {
-  if (event.keyCode >= 65 && event.keyCode <= 90) {
+  if (
+    event.keyCode >= 65 &&
+    event.keyCode <= 90 &&
+    alreadyGuessed.indexOf(event.key) === -1
+  ) {
     // YOU CAN DO IT!!
 
-    guessesLeft--;
+    for (let i = 0; i < answer.length; i++) {
+      if (answer[i].toLowerCase() === event.key) {
+        currentWord[i] = answer[i];
+      }
+    }
+    document.getElementById("currentWord").textContent = currentWord;
+    if (answer.toLowerCase().indexOf(event.key) === -1) {
+      guessesLeft--;
+    } else {
+      testWin();
+    }
+
+    document.getElementById("guessesLeft").textContent = guessesLeft;
+
     if (guessesLeft < 1) {
       document.getElementById("hiddenTotoro").style.display = "block";
       document.getElementById("resetButton").style.display = "block";
@@ -52,17 +67,19 @@ function keyPressed(event) {
       document.getElementById("hangman").style.display = "none";
       document.querySelector(".header").style.display = "none";
       document.getElementById("music").pause();
-
-      // guessesLeft = 15;
-      // alreadyGuessed = [];
-      // answerIndex = [Math.floor(Math.random() * miyazaki.length)];
-      // answer = miyazaki[answerIndex];
-      // resetGame();
     }
+    alreadyGuessed.push(event.key);
+    document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
   }
   document.getElementById("guessesLeft").textContent = guessesLeft;
-  alreadyGuessed.push(event.key);
-  document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
+}
+
+function testWin() {
+  if (currentWord.join("") === answer) {
+    wins++;
+  }
+  console.log(currentWord, answer);
+  document.getElementById("wins").textContent = wins;
 }
 
 function reloadPage() {
@@ -80,7 +97,7 @@ function resetGame() {
     if (answer[i] !== " ") {
       currentWord[i] = "_";
     } else {
-      currentWord[i] = "-";
+      currentWord[i] = " ";
     }
   }
   console.log(answer);
@@ -88,7 +105,6 @@ function resetGame() {
   document.getElementById("currentWord").textContent = currentWord;
   document.getElementById("guessesLeft").textContent = guessesLeft;
   document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
-  console.log(answer, currentWord);
 }
 
 resetGame();
