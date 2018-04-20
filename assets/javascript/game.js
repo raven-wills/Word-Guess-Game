@@ -31,6 +31,7 @@ var guessesLeft = 10;
 var alreadyGuessed = [];
 var answerIndex = [Math.floor(Math.random() * miyazaki.length)];
 var answer = miyazaki[answerIndex];
+var previousAnswer = answer;
 
 document.getElementById("wins").textContent = wins;
 document.getElementById("currentWord").textContent = currentWord.join("");
@@ -72,6 +73,7 @@ function keyPressed(event) {
           document.getElementById("hangman").style.display = "none";
           document.querySelector(".header").style.display = "none";
           document.getElementById("music").pause();
+          document.getElementById("congratsMusic").play();
         }
       }
     }
@@ -103,6 +105,12 @@ function resetGame() {
 
   answerIndex = [Math.floor(Math.random() * miyazaki.length)];
   answer = miyazaki[answerIndex];
+  if (answer === previousAnswer) {
+    console.log("Answer repeated!!!");
+    answerIndex = [Math.floor(Math.random() * miyazaki.length)];
+    answer = miyazaki[answerIndex];
+    previousAnswer = answer;
+  }
 
   for (var i = 0; i < answer.length; i++) {
     if (answer[i].match(/[A-z]/)) {
