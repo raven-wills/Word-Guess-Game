@@ -6,6 +6,8 @@ html {
   -o-background-size: cover;
   background-size: cover;
   height: 100%;
+  padding-top: 1em;
+  padding-left: 1em;
 }
 
 body {
@@ -38,6 +40,7 @@ header {
   text-align: center;
   font-size: 40px;
   line-height: 2em;
+  color: whitesmoke;
 }
 
 #hangman {

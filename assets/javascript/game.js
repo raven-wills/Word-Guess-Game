@@ -33,28 +33,41 @@ var answerIndex = [Math.floor(Math.random() * miyazaki.length)];
 var answer = miyazaki[answerIndex];
 
 document.getElementById("wins").textContent = wins;
-document.getElementById("currentWord").textContent = currentWord;
+document.getElementById("currentWord").textContent = currentWord
+  .join("")
+  .replace(" ", "-");
 document.getElementById("guessesLeft").textContent = guessesLeft;
 document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
 
 function keyPressed(event) {
   if (
-    event.keyCode >= 65 &&
-    event.keyCode <= 90 &&
+    event.key.match(/^[a-zA-Z]$/) &&
     alreadyGuessed.indexOf(event.key) === -1
   ) {
     // YOU CAN DO IT!!
-
     for (let i = 0; i < answer.length; i++) {
       if (answer[i].toLowerCase() === event.key) {
         currentWord[i] = answer[i];
       }
     }
-    document.getElementById("currentWord").textContent = currentWord;
+    document.getElementById("currentWord").textContent = currentWord
+      .join("")
+      .replace(" ", "-");
     if (answer.toLowerCase().indexOf(event.key) === -1) {
+      // Incorrect Guess
       guessesLeft--;
+      alreadyGuessed.push(event.key);
+      document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
     } else {
-      testWin();
+      // Correct Guess
+      if (currentWord.join("") === answer) {
+        // WINNER WINNER
+        wins++;
+        resetGame();
+        alreadyGuessed = [];
+        document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
+        if (wins === 5) alert("Wooop five wins!!");
+      }
     }
 
     document.getElementById("guessesLeft").textContent = guessesLeft;
@@ -68,18 +81,9 @@ function keyPressed(event) {
       document.querySelector(".header").style.display = "none";
       document.getElementById("music").pause();
     }
-    alreadyGuessed.push(event.key);
-    document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
   }
-  console.log(currentWord);
-  document.getElementById("guessesLeft").textContent = guessesLeft;
-}
 
-function testWin() {
-  if (currentWord.join("") === answer) {
-    wins++;
-    resetGame();
-  }
+  document.getElementById("guessesLeft").textContent = guessesLeft;
 }
 
 function reloadPage() {
@@ -87,25 +91,37 @@ function reloadPage() {
 }
 
 function resetGame() {
+  currentWord = [];
+  guessesLeft = 10;
+  alreadyGuessed = [];
+
   answerIndex = [Math.floor(Math.random() * miyazaki.length)];
   answer = miyazaki[answerIndex];
 
-  currentWord = [];
-  alreadyGuessed = [];
-
   for (var i = 0; i < answer.length; i++) {
-    if (answer[i] !== " ") {
+    if (answer[i].match(/[A-z]/)) {
       currentWord[i] = "_";
     } else {
-      currentWord[i] = " ";
+      currentWord[i] = answer[i];
     }
   }
 
-  console.log(answer);
+  console.log("I do not condone cheating!!!");
+  console.log("...");
+  console.log("...");
+  console.log("...");
+  console.log(
+    answer
+      .split("")
+      .reverse()
+      .join("")
+  );
   document.getElementById("wins").textContent = wins;
-  document.getElementById("currentWord").textContent = currentWord;
+  document.getElementById("currentWord").textContent = currentWord
+    .join("")
+    .replace(" ", "-");
   document.getElementById("guessesLeft").textContent = guessesLeft;
-  document.getElementById("alreadyGuessed").textContent = alreadyGuessed;
 }
+
 resetGame();
 document.addEventListener("keydown", keyPressed);
