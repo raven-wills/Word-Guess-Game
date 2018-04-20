@@ -49,6 +49,10 @@ header {
   color: whitesmoke;
 }
 
+#currentWord {
+  letter-spacing: 0.2em;
+}
+
 #hangman {
   float: left;
   color: rgba(238, 2, 2, 0.548);
